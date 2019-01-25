@@ -16,6 +16,104 @@ namespace Advanced_Lesson_2_Inheritance
         /// </summary>
         public static void A_L2_P1_1()
         {
+            Console.WriteLine("Введите текст ");
+            string text = Console.ReadLine();
+            Console.WriteLine("Choose print tupe : ");
+            Console.WriteLine("1-console : ");
+            Console.WriteLine("2-file : ");
+            Console.WriteLine("3-picture : ");
+            string type = Console.ReadLine();
+
+            IPrinter printer = null;
+
+
+            switch (type)
+            {
+                case "1":
+                    var printer1 = new ConsolePrinter(text, ConsoleColor.Blue);
+                    printer1.Print(text);
+                    break;
+                case "2":
+                    var printer2 = new FilePrinter(text, "test");
+                    break;
+
+                case "3":
+                    //printer = new BitmapPriner("BitmapPrinerExample");
+                    Console.WriteLine("You have choosen printing  into picture ");
+                    break;
+            }
+
+        }
+        public interface IPrinter
+        {
+            void Print(string text);
+        }
+
+
+        abstract class Printer
+        {
+            public string PrintingText { get; private set; }
+            public Printer(string text)
+            {
+                PrintingText = text;
+            }
+            public abstract void Print();
+        }
+
+
+        class ConsolePrinter : IPrinter
+        {
+            private ConsoleColor _color;
+            public ConsolePrinter(string text, ConsoleColor color)
+            {
+                _color = color;
+            }
+            public void Print(string text)
+            {
+                Console.ForegroundColor = _color;
+                Console.WriteLine(text);
+                Console.ResetColor();
+            }
+        }
+
+        class FilePrinter : Printer
+        {
+            private string _filename;
+            public FilePrinter(string text, string filename) : base(text)
+            {
+                _filename = filename;
+            }
+
+            public override void Print()
+            {
+                System.IO.File.AppendAllText($@"D:\\{_filename}.txt", PrintingText);
+            }
+        }
+
+        public class BitmapPrinter : IPrinter
+        {
+            public string _fileName { get; private set; }
+            public void Print(string str)
+            {
+                Bitmap bitmap = new Bitmap(1000, 1000);
+
+                Font drawFont = new Font("Arial", 16);
+                SolidBrush drawBrush = new SolidBrush(Color.Black);
+                float x = 150.0F;
+                float y = 50.0F;
+
+                StringFormat drawFormat = new StringFormat();
+                drawFormat.FormatFlags = StringFormatFlags.DirectionVertical;
+
+                Graphics graphics = Graphics.FromImage(bitmap);
+                graphics.DrawString(str, drawFont, drawBrush, x, y, drawFormat);
+                Bitmap.Save($@"D:\{_fileName}.png");
+
+            }
+            public BitmapPrinter(string fileName)
+            {
+                _fileName = fileName;
+            }
 
         }
     }
