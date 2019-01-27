@@ -35,10 +35,12 @@ namespace Advanced_Lesson_2_Inheritance
                     break;
                 case "2":
                     var printer2 = new FilePrinter(text, "test");
+                    printer2.Print();
                     break;
 
                 case "3":
-                    //printer = new BitmapPriner("BitmapPrinerExample");
+                  var printer3 = new BitmapPrinter("BitmapPrinerExample");
+                    printer3.Print(text);
                     Console.WriteLine("You have choosen printing  into picture ");
                     break;
             }
@@ -107,7 +109,7 @@ namespace Advanced_Lesson_2_Inheritance
 
                 Graphics graphics = Graphics.FromImage(bitmap);
                 graphics.DrawString(str, drawFont, drawBrush, x, y, drawFormat);
-                Bitmap.Save($@"D:\{_fileName}.png");
+                bitmap.Save($@"D:\{_fileName}.png");
 
             }
             public BitmapPrinter(string fileName)
