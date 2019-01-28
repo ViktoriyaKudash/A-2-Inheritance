@@ -30,12 +30,12 @@ namespace Advanced_Lesson_2_Inheritance
             switch (type)
             {
                 case "1":
-                    var printer1 = new ConsolePrinter(text, ConsoleColor.Blue);
+                    var printer1 = new ConsolePrinter( ConsoleColor.Blue);
                     printer1.Print(text);
                     break;
                 case "2":
-                    var printer2 = new FilePrinter(text, "test");
-                    printer2.Print();
+                    var printer2 = new FilePrinter( "test");
+                    printer2.Print(text);
                     break;
 
                 case "3":
@@ -52,21 +52,13 @@ namespace Advanced_Lesson_2_Inheritance
         }
 
 
-        abstract class Printer
-        {
-            public string PrintingText { get; private set; }
-            public Printer(string text)
-            {
-                PrintingText = text;
-            }
-            public abstract void Print();
-        }
+        
 
 
         class ConsolePrinter : IPrinter
         {
             private ConsoleColor _color;
-            public ConsolePrinter(string text, ConsoleColor color)
+            public ConsolePrinter( ConsoleColor color) 
             {
                 _color = color;
             }
@@ -78,24 +70,28 @@ namespace Advanced_Lesson_2_Inheritance
             }
         }
 
-        class FilePrinter : Printer
+        class FilePrinter : IPrinter
         {
             private string _filename;
-            public FilePrinter(string text, string filename) : base(text)
+            public FilePrinter(string textx)
             {
-                _filename = filename;
+                _filename = textx;
             }
 
-            public override void Print()
+           
+
+            public void Print(string text)
             {
-                System.IO.File.AppendAllText($@"D:\\{_filename}.txt", PrintingText);
+                System.IO.File.AppendAllText($@"D:\\{_filename}.txt", text);
+                throw new NotImplementedException();
+               
             }
         }
 
         public class BitmapPrinter : IPrinter
         {
-            public string _fileName { get; private set; }
-            public void Print(string str)
+            public string _fileName { get; private set; } 
+            public void Print(string str) 
             {
                 Bitmap bitmap = new Bitmap(1000, 1000);
 
@@ -109,10 +105,10 @@ namespace Advanced_Lesson_2_Inheritance
 
                 Graphics graphics = Graphics.FromImage(bitmap);
                 graphics.DrawString(str, drawFont, drawBrush, x, y, drawFormat);
-                bitmap.Save($@"D:\{_fileName}.png");
+                bitmap.Save($@"D:\\{_fileName}.png");
 
             }
-            public BitmapPrinter(string fileName)
+            public BitmapPrinter(string fileName) : base()
             {
                 _fileName = fileName;
             }
